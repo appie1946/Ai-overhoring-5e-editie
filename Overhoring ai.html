@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Zelfoverhoring — Organiseren & Managen</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #FAF9F6; --card: #FFFFFF; --border: #E8E6E0;
+  --text: #1A1916; --text-2: #6B6860; --text-3: #9B9890;
+  --accent: #26215C; --accent-light: #EEEDFE;
+  --orange: #F5A623; --orange-light: #FFF3E0;
+  --blue: #185FA5; --blue-light: #E6F1FB;
+  --radius: 14px; --shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
+.page-wrap { max-width: 640px; margin: 0 auto; }
+.header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); gap: 1rem; }
+.header-tekst { flex: 1; }
+.header-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: var(--text-3); text-transform: uppercase; margin-bottom: 0.4rem; }
+.header h1 { font-family: 'DM Serif Display', serif; font-size: 28px; font-weight: 400; color: var(--text); line-height: 1.2; }
+.header h1 span { color: var(--accent); }
+.header-sub { font-size: 12px; color: var(--text-2); margin-top: 0.3rem; }
+.logo-wrap img { width: 72px; height: auto; border-radius: 8px; }
+.instructie { background: var(--accent-light); border-radius: var(--radius); padding: 1.125rem 1.25rem; margin-bottom: 1.5rem; border-left: 3px solid var(--accent); }
+.instructie h3 { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 0.75rem; }
+.i-stap { display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: 0.5rem; }
+.i-nr { background: var(--accent); color: #fff; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.i-tekst { font-size: 12.5px; color: #3C3489; line-height: 1.55; }
+.waarschuwing { background: var(--orange-light); border-left: 3px solid var(--orange); border-radius: var(--radius); padding: 0.875rem 1.125rem; margin-bottom: 1.5rem; font-size: 12.5px; color: #7A4E00; line-height: 1.6; }
+.tabs { display: flex; gap: 6px; margin-bottom: 1.5rem; background: var(--border); padding: 4px; border-radius: 12px; }
+.tab { flex: 1; padding: 0.6rem 1rem; border: none; border-radius: 9px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; background: transparent; color: var(--text-2); }
+.tab.actief { background: var(--card); color: var(--accent); box-shadow: var(--shadow); }
+.tab:hover:not(.actief) { color: var(--text); }
+.panel { display: none; }
+.panel.actief { display: block; }
+.uitleg { background: #F1EFE8; border-radius: var(--radius); padding: 1.125rem 1.25rem; margin-bottom: 1.5rem; }
+.uitleg h3 { font-size: 13px; font-weight: 600; color: #2C2C2A; margin-bottom: 0.5rem; }
+.uitleg ol { padding-left: 1.25rem; }
+.uitleg ol li { font-size: 12.5px; color: #555350; line-height: 1.75; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.hfd-btn { border: none; border-radius: var(--radius); padding: 1rem 1.125rem; text-align: left; cursor: pointer; transition: opacity 0.15s, transform 0.12s; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.hfd-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.hfd-btn .nr { font-size: 10.5px; font-weight: 600; letter-spacing: 0.05em; opacity: 0.7; margin-bottom: 4px; text-transform: uppercase; }
+.hfd-btn .titel { font-size: 13px; font-weight: 500; line-height: 1.4; }
+.terug-balk { display: none; background: var(--accent-light); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.5rem; align-items: center; justify-content: space-between; gap: 12px; }
+.terug-balk span { font-size: 13px; color: var(--accent); font-weight: 500; }
+.btn-terug { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.5rem 1rem; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+.btn-terug:hover { opacity: 0.85; }
+.feedback-blok { background: var(--blue-light); border-radius: var(--radius); padding: 1.25rem; margin-top: 1.75rem; }
+.feedback-blok h3 { font-family: 'DM Serif Display', serif; font-size: 16px; font-weight: 400; color: #042C53; margin-bottom: 0.4rem; }
+.feedback-blok p { font-size: 12.5px; color: #185FA5; margin-bottom: 1rem; line-height: 1.65; }
+.feedback-blok textarea { width: 100%; border: 0.5px solid #B5D4F4; border-radius: 10px; padding: 0.75rem; font-family: 'DM Sans', sans-serif; font-size: 13px; color: #042C53; background: #fff; resize: vertical; min-height: 90px; outline: none; }
+.stappen { background: #fff; border: 0.5px solid #B5D4F4; border-radius: 10px; padding: 0.875rem 1rem; margin: 0.875rem 0; }
+.stappen p { font-size: 12px; font-weight: 600; color: #042C53; margin-bottom: 0.4rem; }
+.stappen ol { padding-left: 1.2rem; }
+.stappen ol li { font-size: 12px; color: #185FA5; line-height: 1.8; }
+.btn-rij { display: flex; gap: 8px; margin-top: 0.875rem; flex-wrap: wrap; }
+.btn-mail { background: var(--blue); color: #fff; border: none; border-radius: 8px; padding: 0.625rem 1.125rem; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
+.btn-mail:hover { opacity: 0.85; }
+.btn-pdf-fb { background: #fff; color: var(--blue); border: 0.5px solid #B5D4F4; border-radius: 8px; padding: 0.625rem 1.125rem; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
+.btn-pdf-fb:hover { opacity: 0.75; }
+.melding { font-size: 12px; color: #0C447C; margin-top: 0.5rem; display: none; background: #dceefa; border-radius: 6px; padding: 0.4rem 0.75rem; }
+.footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 11.5px; color: var(--text-3); text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+.footer img { width: 24px; height: auto; border-radius: 3px; opacity: 0.6; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="header">
+    <div class="header-tekst">
+      <div class="header-label">AI-Zelfoverhoring</div>
+      <h1>Organiseren <span>&</span> Managen</h1>
+      <div class="header-sub">5e druk · André Weber & Aldert Doelen</div>
+    </div>
+    <div class="logo-wrap">
+      <img src="data:image/png;base64,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" alt="A&A logo">
+    </div>
+  </div>
+
+  <div class="instructie">
+    <h3>📋 AI-overhoringsinstructie — zo werkt het</h3>
+    <div class="i-stap"><div class="i-nr">1</div><div class="i-tekst"><strong>Start altijd met een nieuw gesprek</strong> (New Conversation) — zo zijn eerdere antwoorden automatisch gewist.</div></div>
+    <div class="i-stap"><div class="i-nr">2</div><div class="i-tekst"><strong>Kies een hoofdstuk of case</strong> — klik op de knop. De prompt wordt automatisch verstuurd.</div></div>
+    <div class="i-stap"><div class="i-nr">3</div><div class="i-tekst"><strong>Hoofdstuk:</strong> 10 meerkeuzevragen → 2 open vragen → 2 reflectievragen → 2 ervaringsvragen → eindverslag + PDF.</div></div>
+    <div class="i-stap"><div class="i-nr">4</div><div class="i-tekst"><strong>Case:</strong> lees de casetekst → ontdek bij welk hoofdstuk de case past → kies en motiveer het beste analysemodel → analyseer alle 7 S-elementen → dubbel spinneweb → analyseverslag + PDF.</div></div>
+    <div class="i-stap"><div class="i-nr">5</div><div class="i-tekst"><strong>PDF</strong> wordt automatisch aangemaakt en verstuurd naar de docent (Aldert.doelen@gmail.com).</div></div>
+  </div>
+
+  <div class="waarschuwing">📌 <strong>Elke student start een eigen sessie.</strong> Open altijd een nieuw gesprek (New Conversation) — zo zijn eerdere antwoorden automatisch gewist.</div>
+
+  <div class="terug-balk" id="terug-balk">
+    <span>Gestart — klik hier om terug te gaan.</span>
+    <button class="btn-terug" onclick="tergNaarMenu()">↩ Terug naar hoofdmenu</button>
+  </div>
+
+  <div id="uitleg-blok">
+    <div class="tabs">
+      <button class="tab actief" onclick="toonTab('hoofdstukken', this)">📖 Hoofdstukken</button>
+      <button class="tab" onclick="toonTab('cases', this)">🔍 Cases</button>
+    </div>
+
+    <div id="panel-hoofdstukken" class="panel actief">
+      <div class="uitleg">
+        <h3>Overhoring per hoofdstuk</h3>
+        <ol>
+          <li>Klik op het hoofdstuk dat je wilt oefenen.</li>
+          <li>De AI vraagt je voornaam en datum.</li>
+          <li>10 MC → 2 open → 2 reflectie → 2 ervaringsvragen → eindverslag + PDF.</li>
+        </ol>
+      </div>
+      <div class="grid">
+        <button class="hfd-btn" style="background:#CECBF6;color:#26215C;" onclick="startHoofdstuk(1)"><div class="nr">Hoofdstuk 1</div><div class="titel">Hoofdpunten van organiseren en managen</div></button>
+        <button class="hfd-btn" style="background:#9FE1CB;color:#04342C;" onclick="startHoofdstuk(2)"><div class="nr">Hoofdstuk 2</div><div class="titel">Kennismaking met het 7S-model</div></button>
+        <button class="hfd-btn" style="background:#F5C4B3;color:#4A1B0C;" onclick="startHoofdstuk(3)"><div class="nr">Hoofdstuk 3</div><div class="titel">Season / Tijdsgewricht</div></button>
+        <button class="hfd-btn" style="background:#F4C0D1;color:#4B1528;" onclick="startHoofdstuk(4)"><div class="nr">Hoofdstuk 4</div><div class="titel">Strategy / Strategie</div></button>
+        <button class="hfd-btn" style="background:#B5D4F4;color:#042C53;" onclick="startHoofdstuk(5)"><div class="nr">Hoofdstuk 5</div><div class="titel">Structure / Structuur</div></button>
+        <button class="hfd-btn" style="background:#C0DD97;color:#173404;" onclick="startHoofdstuk(6)"><div class="nr">Hoofdstuk 6</div><div class="titel">Systems / Systemen</div></button>
+        <button class="hfd-btn" style="background:#FAC775;color:#412402;" onclick="startHoofdstuk(7)"><div class="nr">Hoofdstuk 7</div><div class="titel">Staff / Personeel</div></button>
+        <button class="hfd-btn" style="background:#F7C1C1;color:#501313;" onclick="startHoofdstuk(8)"><div class="nr">Hoofdstuk 8</div><div class="titel">Style / Stijlen van leidinggeven</div></button>
+        <button class="hfd-btn" style="background:#D3D1C7;color:#2C2C2A;" onclick="startHoofdstuk(9)"><div class="nr">Hoofdstuk 9</div><div class="titel">Shared values & Skills</div></button>
+        <button class="hfd-btn" style="background:#5DCAA5;color:#04342C;" onclick="startHoofdstuk(10)"><div class="nr">Hoofdstuk 10</div><div class="titel">Beoordeling met het 7S-model</div></button>
+      </div>
+    </div>
+
+    <div id="panel-cases" class="panel">
+      <div class="uitleg">
+        <h3>Caseanalyse met het 7S-model</h3>
+        <ol>
+          <li>Klik op een case — lees eerst de volledige casetekst.</li>
+          <li>Ontdek zelf bij welk hoofdstuk de case past.</li>
+          <li>Kies en motiveer het beste analysemodel.</li>
+          <li>Analyseer alle zeven S-elementen + dubbel spinneweb.</li>
+          <li>Automatisch analyseverslag + PDF naar Aldert.doelen@gmail.com.</li>
+        </ol>
+      </div>
+      <div class="grid">
+        <button class="hfd-btn" style="background:#CECBF6;color:#26215C;" onclick="startCase(1)"><div class="nr">Case 1</div><div class="titel">Jonge boeren: 'Wij hebben de overheid nodig'</div></button>
+        <button class="hfd-btn" style="background:#9FE1CB;color:#04342C;" onclick="startCase(2)"><div class="nr">Case 2</div><div class="titel">Case 2</div></button>
+        <button class="hfd-btn" style="background:#F5C4B3;color:#4A1B0C;" onclick="startCase(3)"><div class="nr">Case 3</div><div class="titel">Case 3</div></button>
+        <button class="hfd-btn" style="background:#F4C0D1;color:#4B1528;" onclick="startCase(4)"><div class="nr">Case 4</div><div class="titel">Case 4</div></button>
+        <button class="hfd-btn" style="background:#B5D4F4;color:#042C53;" onclick="startCase(5)"><div class="nr">Case 5</div><div class="titel">Case 5</div></button>
+        <button class="hfd-btn" style="background:#C0DD97;color:#173404;" onclick="startCase(6)"><div class="nr">Case 6</div><div class="titel">Case 6</div></button>
+        <button class="hfd-btn" style="background:#FAC775;color:#412402;" onclick="startCase(7)"><div class="nr">Case 7</div><div class="titel">Case 7</div></button>
+        <button class="hfd-btn" style="background:#F7C1C1;color:#501313;" onclick="startCase(8)"><div class="nr">Case 8</div><div class="titel">Case 8</div></button>
+        <button class="hfd-btn" style="background:#D3D1C7;color:#2C2C2A;" onclick="startCase(9)"><div class="nr">Case 9</div><div class="titel">Case 9</div></button>
+        <button class="hfd-btn" style="background:#5DCAA5;color:#04342C;" onclick="startCase(10)"><div class="nr">Case 10</div><div class="titel">Case 10</div></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="feedback-blok">
+    <h3>Van de schrijvers van dit boek</h3>
+    <p>Wij, André Weber en Aldert Doelen, willen ook van jóu leren. Heb je suggesties om deze AI-overhoring te verbeteren? Laat het ons weten!</p>
+    <textarea id="feedbacktekst" placeholder="Schrijf hier je feedback, suggesties of verbeterpunten..."></textarea>
+    <div class="stappen">
+      <p>Zo stuur je je feedback met PDF mee:</p>
+      <ol>
+        <li>Klik op <strong>Maak hiervan een PDF</strong> en sla de PDF op je apparaat op.</li>
+        <li>Klik op <strong>Verstuur naar de schrijvers</strong> — je e-mailprogramma opent zich.</li>
+        <li>Voeg de PDF als bijlage toe en verstuur.</li>
+      </ol>
+    </div>
+    <div class="btn-rij">
+      <button class="btn-pdf-fb" onclick="maakPDF()">Maak hiervan een PDF</button>
+      <button class="btn-mail" onclick="stuurMail()">Verstuur naar de schrijvers</button>
+    </div>
+    <div class="melding" id="melding">Je e-mailprogramma wordt geopend. Vergeet de PDF als bijlage toe te voegen!</div>
+  </div>
+
+  <div class="footer">
+    <img src="data:image/png;base64,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" alt="A&A">
+    Organiseren & Managen, 5e druk · © André Weber & Aldert Doelen
+  </div>
+
+</div>
+<script>
+const hfdData={1:{titel:'Hoofdpunten van organiseren en managen',mc:['Wat is het verschil tussen organiseren en managen?','Wat houdt Theorie X van McGregor in?','Wat houdt Theorie Y van McGregor in?','Wat kenmerkt de Human Relations-benadering?','Wat is de kern van de systeembenadering?','Wat is de contingentiebenadering?','Wat kenmerkt de pioniersfase?','Wat kenmerkt de differentieringsfase?','Hoe kan big data bijdragen?','Wat is de invloed van social media?'],open:['Leg uit wat het verschil is tussen formele en informele organisatie en geef een voorbeeld.','Beschrijf hoe een manager Theorie Y toepast bij jonge professionals.'],reflectie:['Welke managementvisie past bij jouw leiderschapsstijl?','In welke organisatiefase zou jij als starter willen werken?'],ervaring:['Hoe vond je het om jezelf via AI te toetsen?','Wat zou je anders willen aan deze overhoring?']},2:{titel:'Kennismaking met het 7S-model',mc:['Wat zijn de zeven elementen?','Welk element staat centraal en waarom?','Wat is Season/Tijdsgewricht?','Wat is Strategy?','Wat is Structure?','Wat zijn Systems?','Wat is Staff?','Wat is Style?','Wat zijn Skills?','Hoe hangen de elementen samen?'],open:['Hoe gebruik je het 7S-model voor een organisatieprobleem?','Geef een voorbeeld van een mismatch en de gevolgen.'],reflectie:['Welk element is voor jou het belangrijkste?','Hoe zou jij het model inzetten voor een eigen organisatie?'],ervaring:['Hoe ervaarde je het model leren via AI?','Welke vraag vond je het meest uitdagend?']},3:{titel:'Season / Tijdsgewricht',mc:['Wat is tijdsgewricht?','Wat is MVO?','Wat is de circulaire economie?','Wat is klimaatneutraal ondernemen?','Wat zijn eerlijke ketens?','Hoe beïnvloedt globalisering organisaties?','Wat is een inclusieve organisatie?','Hoe speelt ICT in op het tijdsgewricht?','Wat is duurzaam ondernemen?','Welke ontwikkelingen bepalen het tijdsgewricht?'],open:['Hoe stemt een organisatie haar strategie af op het tijdsgewricht?','Wat betekent MVO voor een middelgroot bedrijf?'],reflectie:['Welke ontwikkeling raakt jou het meest?','Hoe wil jij bijdragen aan duurzaamheid?'],ervaring:['Hoe vond je reflecteren op maatschappelijke thema\'s via AI?','Wat neem je mee?']},4:{titel:'Strategy / Strategie',mc:['Wat is strategie?','Hoe analyseer je de omgeving?','Verschil missie en visie?','Wat zijn strategische doelen?','Wat is strategieformulering?','Wat is een SWOT-analyse?','Wat zijn kritieke succesfactoren?','Hoe zet je strategie om in actieplan?','Rol van big data?','Offensieve vs defensieve strategie?'],open:['Hoe bepaalt een organisatie haar strategie?','Hoe verbetert big data de besluitvorming?'],reflectie:['Welke strategische vaardigheid wil jij ontwikkelen?','Hoe bepaal jij de strategie van een eigen bedrijf?'],ervaring:['Wat vond je van strategische kennis via AI toetsen?','Welk onderdeel wil je beter bestuderen?']},5:{titel:'Structure / Structuur',mc:['Wat is een organisatiestructuur?','Wat is een lijnorganisatie?','Wat is een lijn-staforganisatie?','Vijf configuraties van Mintzberg?','Wat kenmerkt een machinebureau?','Wat is een professionele bureaucratie?','Wat is een divisiestructuur?','Wat is een adhocratie?','Invloed digitale transformatie?','Platte vs steile structuur?'],open:['Welke structuur past bij een techbedrijf?','Hoe verandert digitalisering een traditioneel bedrijf?'],reflectie:['In welke structuur functioneer jij het beste?','Hoe richt jij een team in?'],ervaring:['Hoe ervaarde je structuren via AI?','Welke vraag was het meest leerzaam?']},6:{titel:'Systems / Systemen',mc:['Wat zijn systemen?','Wat is een open systeem?','Wat is een gesloten systeem?','Wat is systeemanalyse?','Wat is systeeminnovatie?','Systemen die strategie ondersteunen?','Systemen die communicatie ondersteunen?','Wat zijn bedrijfsprocessystemen?','Hoe dragen systemen bij aan efficiëntie?','Rol big data in systemen?'],open:['Hoe belemmert een verouderd systeem de bedrijfsvoering?','Hoe moeten systemen en strategie afgestemd zijn?'],reflectie:['Welk systeem is het meest waardevol?','Hoe ga je om met weerstand?'],ervaring:['Hoe vond je systemen via AI verkennen?','Wat wil je verbeteren?']},7:{titel:'Staff / Personeel',mc:['Wat is de ruilrelatie?','Wat biedt een organisatie?','Wat biedt een medewerker?','Wat is HRM?','Kerntaken HRM?','Wat is strategisch HRM?','Invloed digitale transformatie?','Wat is employer branding?','Wat is talentmanagement?','Rol diversiteit?'],open:['Hoe houd je de ruilrelatie in balans?','Hoe verandert digitalisering HRM?'],reflectie:['Wat verwacht jij van een werkgever?','Hoe draag jij bij aan inclusief beleid?'],ervaring:['Hoe vond je personeelsthema\'s via AI?','Welk onderdeel wil je verdiepen?']},8:{titel:'Style / Stijlen van leidinggeven',mc:['Wat is autocratisch leiderschap?','Wat is democratisch leiderschap?','Wat is laissez-faire?','Wat is situationeel leiderschap?','Vier stijlen situationeel leiderschap?','Wat is transformationeel leiderschap?','Wat is transactioneel leiderschap?','Wat is servant leadership?','Invloed big data op stijl?','Management vs leiderschap?'],open:['Welke stijl past bij ervaren professionals?','Hoe werkt situationeel leiderschap in praktijk?'],reflectie:['Welke stijl past bij jouw karakter?','Welke kwaliteit mis je nog?'],ervaring:['Hoe ervaarde je leiderschap via AI?','Welke vraag zette jou aan het denken?']},9:{titel:'Shared values & Skills',mc:['Wat zijn shared values?','Waarom staan ze centraal?','Wat is organisatiecultuur?','Wat zijn sleutelvaardigheden?','Wat kenmerkt een excellente organisatie?','Wat is een moreel kader?','Relatie visie, missie en waarden?','Hoe beïnvloeden waarden gedrag?','Hoe stuur je cultuur?','Rol big data bij cultuur?'],open:['Hoe dragen waarden bij aan samenwerking?','Hoe vertaal je waarden naar gedrag?'],reflectie:['Welke waarden zijn voor jou het belangrijkst?','Hoe draag jij bij aan een positieve cultuur?'],ervaring:['Hoe vond je reflecteren op waarden via AI?','Wat neem je mee?']},10:{titel:'Beoordeling van de organisatie met behulp van het 7S-model',mc:['Waarvoor gebruik je het model als diagnose?','Wat is de eerste stap?','Wat is een mismatch?','Mismatch Strategy en Structure?','Gevolgen mismatch Shared values en Style?','Stappen bij oplossen?','Wat leer je van Venturi Aviation?','Model bij fusie?','Wat maakt het model geschikt?','Hoe monitor je voortgang?'],open:['Hoe pas je het 7S-model toe als diagnose?','Analyseer de Venturi Aviation casus.'],reflectie:['Hoe gebruik jij het model bij een nieuw team?','Welk inzicht neem jij mee?'],ervaring:['Hoe vond je het model via AI toetsen?','Wat zou jij toevoegen?']}};
+
+const caseData={1:{titel:"Jonge boeren: 'Wij hebben de overheid nodig'",inhoud:"Jonge boeren in Nederland willen ondernemen, investeren en verduurzamen — maar lopen vast. De oorzaken: hoge grondprijzen en kapitaalintensieve bedrijfsovername maken de instap financieel zwaar. Daarnaast wisselt overheidsbeleid rond stikstof, mest, klimaat en dierenwelzijn voortdurend, waardoor langetermijninvesteringen onzeker zijn. Banken zijn terughoudend. De overheid biedt vestigingssubsidie (max. €80.000), maar dat lost het structurele probleem niet op. Zonder jonge opvolgers vergrijst de sector en verdwijnt vernieuwingskracht. Jonge boeren vragen niet om stilstand — ze vragen om houvast, perspectief en een betrouwbare overheid.",ai_scores:[2,2,2,1,3,2,3]}};
+
+function toonTab(naam,el){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('actief'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('actief'));document.getElementById('panel-'+naam).classList.add('actief');el.classList.add('actief');}
+function vergrendel(){document.getElementById('terug-balk').style.display='flex';document.getElementById('uitleg-blok').style.display='none';}
+function tergNaarMenu(){document.getElementById('terug-balk').style.display='none';document.getElementById('uitleg-blok').style.display='block';}
+
+function startHoofdstuk(nr){
+  vergrendel();
+  const h=hfdData[nr];
+  const p="Welkom! Zorg dat je een nieuw gesprek hebt geopend (New Conversation).\n\nIk wil mezelf overhoren over hoofdstuk "+nr+" van Organiseren & Managen: '"+h.titel+"'. Gebruik alleen de inhoud van dit hoofdstuk als bron.\n\nVraag mij eerst: voornaam en datum.\n\nFASE 1 — 10 MEERKEUZEVRAGEN (A/B/C/D, één voor één, feedback na elk):\n"+h.mc.map((v,i)=>(i+1)+". "+v).join("\n")+"\n\nFASE 2 — 2 OPEN VRAGEN (feedback na elk):\n"+h.open.map((v,i)=>(i+1)+". "+v).join("\n")+"\n\nFASE 3 — 2 REFLECTIEVRAGEN:\n"+h.reflectie.map((v,i)=>(i+1)+". "+v).join("\n")+"\n\nFASE 4 — 2 ERVARINGSVRAGEN over AI als toetsmethode:\n"+h.ervaring.map((v,i)=>(i+1)+". "+v).join("\n")+"\n\nFASE 5 — EINDVERSLAG & PDF\nMaak automatisch eindverslag met voornaam, datum, scoreoverzicht (x/10), beoordeling open vragen, beoordeling reflectievragen, samenvatting ervaringen, totaalcijfer en drie studietips.\nSluit af met: Maak hiervan een PDF en stuur deze naar Aldert.doelen@gmail.com\n\nBegin met voornaam en datum.";
+  navigator.clipboard.writeText(p).catch(()=>{});
+  window.open('https://claude.ai','_blank');
+}
+
+function startCase(nr){
+  vergrendel();
+  const c=caseData[nr];
+  let p;
+  if(c&&c.inhoud){
+    const el=['Season','Strategy','Structure','Systems','Staff','Style','Shared values'];
+    const ai=el.map((e,i)=>e+": "+c.ai_scores[i]+"/5").join(', ');
+    p="Welkom! Zorg dat je een nieuw gesprek hebt geopend (New Conversation).\n\nJe begeleidt mij bij een caseanalyse.\n\nSTAP 0 — PRESENTEER DE CASE\nPresenteer de case volledig en leesbaar in duidelijke alinea's. Noem GEEN hoofdstuknummer. Sluit af met: \"Heb je de case goed gelezen? Geef dan je voornaam en de datum, dan starten we.\"\n\n---\nCASE "+nr+": "+c.titel+"\n\n"+c.inhoud+"\n---\n\nWacht op voornaam en datum.\n\nSTAP 1 — PROBLEEMANALYSE\nVraag: \"Wat is het kernprobleem?\" Geef feedback en benoem zelf het kernprobleem.\n\nSTAP 2 — BIJ WELK HOOFDSTUK PAST DEZE CASE?\nVraag: \"Bij welk hoofdstuk uit Organiseren & Managen past deze case het beste — en waarom?\" Geef feedback en vertel daarna bij welk hoofdstuk de case hoort.\n\nSTAP 2b — WELKE S PAST HET BESTE?\nVraag: \"Bij welk van de zeven S-elementen staat de kern van deze case het meest centraal — en waarom?\" Geef feedback.\n\nSTAP 2c — WELK MODEL IS HET MEEST GESCHIKT?\nStel dit keuzemenu voor en vraag de student te motiveren:\n\nWelk analysemodel kies jij voor deze case en waarom? Waarom wel of niet het 7S-model?\nA) 7S-model — samenhang van zeven organisatie-elementen\nB) SWOT-analyse — sterktes, zwaktes, kansen en bedreigingen\nC) DESTEP — macro-omgevingsanalyse\nD) Krachtveldanalyse — voor- en tegenstanders van verandering\nE) Business Model Canvas — hoe verdient de organisatie waarde?\nF) Waardeketananalyse (Porter) — waar zit de waarde in de keten?\n\nGeef uitgebreide feedback: welk model past het beste en waarom, vergelijk met het 7S-model.\n\nSTAP 3 — 7S-ANALYSE\nLoop door ALLE zeven elementen: Season, Strategy, Structure, Systems, Staff, Style, Shared values & Skills. Per element één gerichte vraag over de case. Als de student een element overslaat, vraag er alsnog naar. Feedback na elk antwoord.\n\nSTAP 4 — DUBBEL SPINNEWEB\nVraag scores 1-5 per element. Teken dubbel spinneweb: BLAUWE lijn = student, RODE stippellijn = AI-oordeel ("+ai+"). Label beide in legenda. Beschrijf per element het verschil.\n\nSTAP 5 — REFLECTIE OP SPINNEWEB\n1. Welk verschil valt het meest op en wat zegt dat?\n2. Waar scoorde jij hoger — hoe verklaar je dat?\n\nSTAP 6 — MISMATCHES\nVraag welke mismatches je ziet. Geef feedback.\n\nSTAP 7 — VERBETERACTIES\nVraag welke verbeteracties je als adviseur voorstelt. Geef feedback.\n\nSTAP 8 — REFLECTIE OP AI-OVERHORING\n1. AI-overhoring vs traditioneel tentamen?\n2. Zou jij dit vaker willen gebruiken?\n\nSTAP 9 — ANALYSEVERSLAG & PDF\nMaak volledig analyseverslag met: voornaam, datum, casetekst, kernprobleem, bij welk hoofdstuk de case past, welke S centraal staat, gekozen model + motivatie, analyse per 7S-element, spinneweb scores tabel (student + AI), reflectie spinneweb, mismatches, verbeteracties, reflectie AI-toetsing, beoordeling (1-10) en drie leerpunten.\n\nSluit af met: Maak hiervan een PDF en stuur deze naar Aldert.doelen@gmail.com\n\nBegin met STAP 0.";
+  } else {
+    p="Case "+nr+" is nog niet beschikbaar.";
+  }
+  navigator.clipboard.writeText(p).catch(()=>{});
+  window.open('https://claude.ai','_blank');
+}
+
+function stuurMail(){
+  const t=document.getElementById('feedbacktekst').value.trim();
+  if(!t){alert('Schrijf eerst je feedback.');return;}
+  window.location.href='mailto:A.doelen@gmail.com?subject='+encodeURIComponent('Feedback AI-overhoring O&M')+'&body='+encodeURIComponent('Beste André en Aldert,\n\n'+t+'\n\nMet vriendelijke groet');
+  document.getElementById('melding').style.display='block';
+}
+
+function maakPDF(){
+  const t=document.getElementById('feedbacktekst').value.trim();
+  if(!t){alert('Schrijf eerst je feedback.');return;}
+  alert('Kopieer je feedback en plak in Claude:\n"Maak een nette PDF van mijn feedback voor André Weber en Aldert Doelen."');
+}
+</script>
+</body>
+</html>
